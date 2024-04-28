@@ -65,17 +65,21 @@ class ProductController extends Controller
         ]);
     }
 
-    public function uploadImageLocal()
+    public function uploadImageLocal(Request $request)
     {
-        return response()->json([
-            "message" => "Image successfully storeed in LOCAL disk driver"
-        ]);
+        if ($request->hasFile('image')){
+            Storage::disk('local')->put('/', $request.file('image'));
+            return "Image successfully stored in LOCAL disk driver";
+        }
+        return "No image uploaded";
     }
 
-    public function uploadImagePublic()
+    public function uploadImagePublic(Request $request)
     {
-        return response()->json([
-            "message" => "Image successfully storeed in PUBLIC disk driver"
-        ]); 
+        if ($request->hasFile('image')){
+            Storage::disk('public')->put('/', $request.file('image'));
+            return "Image successfully stored in PUBLIC disk driver";
+        } 
+        return "No image uploaded";
     }
 }

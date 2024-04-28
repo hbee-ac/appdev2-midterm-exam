@@ -15,6 +15,15 @@ class ProductAccessMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
+        $validToken = env('BEARER_TOKEN');
+
+            $token = $request->header('Authorization');
+            if(!$token){
+                return response()->json(['error'=>'The TOKEN is missing.'], 401);
+            }
+            if ($token !== $validToken){
+                return response()->json(['error'=>'The TOKEN is invalid.'], 401);
+            }
         return $next($request);
     }
 }

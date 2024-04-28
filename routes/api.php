@@ -2,8 +2,6 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Products;
-use App\Http\Controllers\PublicController;
 use App\Http\Controllers\ProductController;
 use App\Http\Middleware\ProductAccessMiddleware;
 
@@ -22,11 +20,9 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 //tas 1
-Route::apiResource('images', Products::class);
-
-Route::apiResource('public', PublicController::class);
+Route::post('products/upload/local', [ProductController::class, 'uploadImageLocal'])->name('upload.local');
+Route::post('products/upload/public', [ProductController::class, 'uploadImagePublic'])->name('upload.public');
 
 //task 2
-Route::apiResource('/products', ProductController::class)->middleware(productaccess::class);
+Route::apiResource('/products', ProductController::class)->middleware('productaccess');
 
-// task 3 
